@@ -1,0 +1,9 @@
+services:
+  khsd-construction-budget-api:
+    image: ghcr.io/bobgdickson/khsd-construction-budget
+    container_name: khsd-construction-budget-api
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    restart: unless-stopped
