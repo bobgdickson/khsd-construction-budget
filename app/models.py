@@ -22,3 +22,13 @@ class ConstructionBudget(Base):
     activity_id = Column(String(10), primary_key=True)
     line_descr = Column(String(255), nullable=True)
     monetary_amount = Column(Float)
+
+class ConstructionStaticRow(Base):
+    __tablename__ = "CONSTRUCTION_STATIC_ROWS"
+
+    id = Column(Integer, primary_key=True, index=True)
+    resource = Column(String(10))
+    flow_type = Column(String(50))
+    fiscal_year = Column(String(10))
+    flow_source = Column(String(50))
+    amount = Column(Float)

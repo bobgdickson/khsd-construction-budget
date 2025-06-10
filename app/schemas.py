@@ -38,3 +38,22 @@ class ConstructionBudget(ConstructionBudgetBase):
     id: Optional[int] = None
     class Config:
         orm_mode = True
+
+class ConstructionStaticRowBase(BaseModel):
+    resource: str
+    flow_type: str
+    fiscal_year: str
+    flow_source: str
+    amount: float
+
+class ConstructionStaticRowCreate(ConstructionStaticRowBase):
+    pass
+
+class ConstructionStaticRowUpdate(ConstructionStaticRowBase):
+    pass
+
+class ConstructionStaticRow(ConstructionStaticRowBase):
+    id: int
+
+    class Config:
+        orm_mode = True
