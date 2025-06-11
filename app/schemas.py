@@ -52,7 +52,7 @@ class ConstructionStaticRowCreate(ConstructionStaticRowBase):
 class ConstructionStaticRowUpdate(ConstructionStaticRowBase):
     pass
 
-class ConstructionStaticRow(ConstructionStaticRowBase):
+class ConstructionStaticRowRead(ConstructionStaticRowBase):
     id: int
 
     class Config:
