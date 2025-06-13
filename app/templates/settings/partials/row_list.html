@@ -1,0 +1,21 @@
+{% for setting in settings %}
+  <tr id="setting-{{ setting.name }}">
+    <td>{{ setting.name }}</td>
+    <td>{{ setting.value }}</td>
+    <td>
+      <button class="btn btn-sm btn-secondary"
+              hx-get="/settings/{{ setting.name }}/edit"
+              hx-target="#form-container"
+              hx-swap="innerHTML">
+        Edit
+      </button>
+      <button class="btn btn-sm btn-danger"
+              hx-delete="/settings/{{ setting.name }}"
+              hx-target="#setting-{{ setting.name }}"
+              hx-swap="outerHTML swap:1s"
+              hx-confirm="Are you sure?">
+        Delete
+      </button>
+    </td>
+  </tr>
+{% endfor %}

@@ -1,0 +1,22 @@
+<form
+  hx-post="{{ action }}"
+  hx-target="{% if setting %}#setting-{{ setting.name }}{% else %}#settings-table-body{% endif %}"
+  hx-swap="{% if setting %}outerHTML{% else %}beforeend{% endif %}">
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" id="name" name="name" class="form-control"
+           value="{{ setting.name if setting else '' }}" {% if setting %}readonly{% endif %} required>
+  </div>
+  <div class="mb-3">
+    <label for="value" class="form-label">Value</label>
+    <input type="text" id="value" name="value" class="form-control"
+           value="{{ setting.value if setting else '' }}" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Save</button>
+  <button type="button" class="btn btn-secondary"
+          hx-get="/settings"
+          hx-target="#form-container"
+          hx-swap="innerHTML">
+    Cancel
+  </button>
+</form>

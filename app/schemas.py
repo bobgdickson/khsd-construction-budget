@@ -57,3 +57,21 @@ class ConstructionStaticRowRead(ConstructionStaticRowBase):
 
     class Config:
         orm_mode = True
+
+
+class ConstructionSettingBase(BaseModel):
+    name: str
+    value: str
+
+
+class ConstructionSettingCreate(ConstructionSettingBase):
+    pass
+
+
+class ConstructionSettingUpdate(ConstructionSettingBase):
+    pass
+
+
+class ConstructionSettingRead(ConstructionSettingBase):
+    class Config:
+        orm_mode = True

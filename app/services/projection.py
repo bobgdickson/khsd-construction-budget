@@ -1,11 +1,14 @@
 from sqlalchemy.orm import Session
 from typing import List
 from sqlalchemy import func, delete
-from app.models import ConstructionSource, ConstructionBudget
+# Constants removed in favor of database-backed settings
+from app.models import ConstructionSource, ConstructionBudget, ConstructionSetting
 
-# Constants
-INT_RATE = 0.03
-PRIOR_YEAR = "2024"
+
+def get_setting(db: Session, name: str, default: str) -> str:
+    """Fetch a named setting or return default."""
+    setting = db.query(ConstructionSetting).filter(ConstructionSetting.name == name).first()
+    return setting.value if setting else default
 
 # Static rows previously hardcoded in your script
 STATIC_ROWS = [
@@ -89,7 +92,7 @@ def get_amount(db: Session, flow_type: str, year: str, resource: str) -> float:
     return row[0] if row else 0.0
 
 
-def calc_interest(db: Session, year: str, resource: str, rate: float = INT_RATE):
+def calc_interest(db: Session, year: str, resource: str, rate: float):
     cost = get_amount(db, "COSTS", year, resource)
     beg = get_amount(db, "END_EQUITY", str(int(year) - 1), resource)
     proceeds = get_amount(db, "PROCEEDS", year, resource)
@@ -108,8 +111,11 @@ def calc_balance(db: Session, year: str, resource: str):
     insert_rows(db, [[resource, "END_EQUITY", year, "PROJECTED", total]])
 
 
-def run_projection(db: Session, prior_year: str = PRIOR_YEAR, rate: float = INT_RATE) -> str:
+def run_projection(db: Session) -> str:
+    """Run the full projection, using database settings if available."""
     try:
+        prior_year = get_setting(db, "PRIOR_YEAR", "2024")
+        rate = float(get_setting(db, "INT_RATE", "0.03"))
         clear_sources(db)
         insert_rows(db, STATIC_ROWS)
         budget_rows = get_budget_rows(db, prior_year)

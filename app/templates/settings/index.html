@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="mb-4">Settings Management</h1>
+  <div id="form-container" class="mb-4"></div>
+  <button class="btn btn-primary mb-3"
+          hx-get="/settings/create"
+          hx-target="#form-container"
+          hx-swap="innerHTML">
+    Add New Setting
+  </button>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="settings-table-body"
+           hx-get="/settings/list"
+           hx-trigger="load">
+      <!-- Rows will be loaded here -->
+    </tbody>
+  </table>
+{% endblock %}

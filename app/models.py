@@ -32,3 +32,10 @@ class ConstructionStaticRow(Base):
     fiscal_year = Column(String(10))
     flow_source = Column(String(50))
     amount = Column(Float)
+
+
+class ConstructionSetting(Base):
+    __tablename__ = "CONSTRUCTION_SETTINGS"
+
+    name = Column(String(50), primary_key=True)
+    value = Column(String(255), nullable=False)
