@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="mb-4">Static Rows Management</h1>
+  <div id="form-container" class="mb-4"></div>
+  <button class="btn btn-primary mb-3"
+          hx-get="/static-rows/create"
+          hx-target="#form-container"
+          hx-swap="innerHTML">
+    Add New Row
+  </button>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Resource</th>
+        <th>Flow Type</th>
+        <th>Fiscal Year</th>
+        <th>Flow Source</th>
+        <th>Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="rows-table-body"
+           hx-get="/static-rows/list"
+           hx-trigger="load">
+      <!-- Rows will be loaded here -->
+    </tbody>
+  </table>
+{% endblock %}

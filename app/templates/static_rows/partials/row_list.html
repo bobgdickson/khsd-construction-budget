@@ -1,0 +1,25 @@
+{% for row in rows %}
+  <tr id="row-{{ row.id }}">
+    <td>{{ row.id }}</td>
+    <td>{{ row.resource }}</td>
+    <td>{{ row.flow_type }}</td>
+    <td>{{ row.fiscal_year }}</td>
+    <td>{{ row.flow_source }}</td>
+    <td>{{ row.amount }}</td>
+    <td>
+      <button class="btn btn-sm btn-secondary"
+              hx-get="/static-rows/{{ row.id }}/edit"
+              hx-target="#form-container"
+              hx-swap="innerHTML">
+        Edit
+      </button>
+      <button class="btn btn-sm btn-danger"
+              hx-delete="/static-rows/{{ row.id }}"
+              hx-target="#row-{{ row.id }}"
+              hx-swap="outerHTML swap:1s"
+              hx-confirm="Are you sure?">
+        Delete
+      </button>
+    </td>
+  </tr>
+{% endfor %}
