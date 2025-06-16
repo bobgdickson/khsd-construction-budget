@@ -2,31 +2,57 @@
   hx-post="{{ action }}"
   hx-target="{% if row %}#row-{{ row.id }}{% else %}#rows-table-body{% endif %}"
   hx-swap="{% if row %}outerHTML{% else %}beforeend{% endif %}">
+
   <div class="mb-3">
     <label for="resource" class="form-label">Resource</label>
-    <input type="text" id="resource" name="resource" class="form-control"
-           value="{{ row.resource if row else '' }}" required>
+    <select id="resource" name="resource" class="form-select" required>
+      {% for option in allowed_resources %}
+        <option value="{{ option }}" {% if row and row.resource == option %}selected{% endif %}>
+          {{ option }}
+        </option>
+      {% endfor %}
+    </select>
   </div>
+
   <div class="mb-3">
     <label for="flow_type" class="form-label">Flow Type</label>
-    <input type="text" id="flow_type" name="flow_type" class="form-control"
-           value="{{ row.flow_type if row else '' }}" required>
+    <select id="flow_type" name="flow_type" class="form-select" required>
+      {% for option in allowed_flow_types %}
+        <option value="{{ option }}" {% if row and row.flow_type == option %}selected{% endif %}>
+          {{ option }}
+        </option>
+      {% endfor %}
+    </select>
   </div>
+
   <div class="mb-3">
     <label for="fiscal_year" class="form-label">Fiscal Year</label>
-    <input type="text" id="fiscal_year" name="fiscal_year" class="form-control"
-           value="{{ row.fiscal_year if row else '' }}" required>
+    <select id="fiscal_year" name="fiscal_year" class="form-select" required>
+      {% for option in allowed_fiscal_years %}
+        <option value="{{ option }}" {% if row and row.fiscal_year == option %}selected{% endif %}>
+          {{ option }}
+        </option>
+      {% endfor %}
+    </select>
   </div>
+
   <div class="mb-3">
     <label for="flow_source" class="form-label">Flow Source</label>
-    <input type="text" id="flow_source" name="flow_source" class="form-control"
-           value="{{ row.flow_source if row else '' }}" required>
+    <select id="flow_source" name="flow_source" class="form-select" required>
+      {% for option in allowed_flow_sources %}
+        <option value="{{ option }}" {% if row and row.flow_source == option %}selected{% endif %}>
+          {{ option }}
+        </option>
+      {% endfor %}
+    </select>
   </div>
+
   <div class="mb-3">
     <label for="amount" class="form-label">Amount</label>
     <input type="number" step="any" id="amount" name="amount" class="form-control"
            value="{{ row.amount if row else '' }}" required>
   </div>
+
   <button type="submit" class="btn btn-primary">Save</button>
   <button type="button" class="btn btn-secondary"
           hx-get="/static-rows"

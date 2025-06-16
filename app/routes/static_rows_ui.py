@@ -6,6 +6,12 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.models import ConstructionStaticRow
 from app.schemas import ConstructionStaticRowCreate, ConstructionStaticRowUpdate
+from app.constants import (
+    ALLOWED_RESOURCES,
+    ALLOWED_FLOW_TYPES,
+    ALLOWED_FISCAL_YEARS,
+    ALLOWED_FLOW_SOURCES,
+)
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -32,7 +38,15 @@ def static_rows_create_form(request: Request):
     """Return an empty form for creating a new static row."""
     return templates.TemplateResponse(
         "static_rows/partials/form.html",
-        {"request": request, "action": "/static-rows/create", "row": None},
+        {
+            "request": request, 
+            "action": "/static-rows/create", 
+            "row": None,
+            "allowed_resources": ALLOWED_RESOURCES,
+            "allowed_flow_types": ALLOWED_FLOW_TYPES,
+            "allowed_fiscal_years": ALLOWED_FISCAL_YEARS,
+            "allowed_flow_sources": ALLOWED_FLOW_SOURCES,
+            },
     )
 
 

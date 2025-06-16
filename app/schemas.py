@@ -1,6 +1,11 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
-
+from app.constants import (
+    ALLOWED_RESOURCES,
+    ALLOWED_FLOW_TYPES,
+    ALLOWED_FISCAL_YEARS,
+    ALLOWED_FLOW_SOURCES,
+)
 
 class ConstructionSourceBase(BaseModel):
     resource: str
@@ -45,6 +50,30 @@ class ConstructionStaticRowBase(BaseModel):
     fiscal_year: str
     flow_source: str
     amount: float
+
+    @field_validator("resource")
+    def validate_resource(cls, v):
+        if v not in ALLOWED_RESOURCES:
+            raise ValueError(f"Invalid resource: {v}")
+        return v
+
+    @field_validator("flow_type")
+    def validate_flow_type(cls, v):
+        if v not in ALLOWED_FLOW_TYPES:
+            raise ValueError(f"Invalid flow type: {v}")
+        return v
+
+    @field_validator("fiscal_year")
+    def validate_fiscal_year(cls, v):
+        if v not in ALLOWED_FISCAL_YEARS:
+            raise ValueError(f"Invalid fiscal year: {v}")
+        return v
+
+    @field_validator("flow_source")
+    def validate_flow_source(cls, v):
+        if v not in ALLOWED_FLOW_SOURCES:
+            raise ValueError(f"Invalid flow source: {v}")
+        return v
 
 class ConstructionStaticRowCreate(ConstructionStaticRowBase):
     pass
