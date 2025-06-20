@@ -31,11 +31,17 @@ STATIC_ROWS = [
 
 
 def clear_sources(db: Session):
+    """
+    Remove all projected construction sources from the database.
+    """
     db.execute(delete(ConstructionSource).where(ConstructionSource.flow_source == "PROJECTED"))
     db.commit()
 
 
 def insert_rows(db: Session, rows: List[List]):
+    """
+    Insert multiple construction source rows into the database.
+    """
     for r in rows:
         db.add(ConstructionSource(
             resource=r[0],
@@ -48,6 +54,9 @@ def insert_rows(db: Session, rows: List[List]):
 
 
 def get_budget_rows(db: Session, after_year: str) -> List[List]:
+    """
+    Retrieve aggregated budget rows after a given fiscal year.
+    """
     return db.query(
         ConstructionBudget.budget_period,
         ConstructionBudget.program_code,
@@ -65,6 +74,9 @@ def get_budget_rows(db: Session, after_year: str) -> List[List]:
 
 
 def clean_project_costs(rows: List[List]) -> List[List]:
+    """
+    Filter out zero-cost entries and format budget rows for costs.
+    """
     return [
         [r[1], "COSTS", str(r[0]), "PROJECTED", r[2]]
         for r in rows if r[2] != 0
@@ -72,6 +84,9 @@ def clean_project_costs(rows: List[List]) -> List[List]:
 
 
 def list_years(budget_rows, static_rows):
+    """
+    Compile a sorted list of all fiscal years from budget and static rows.
+    """
     return sorted(set(
         [str(int(r[0])) for r in budget_rows] +
         [r[2] for r in static_rows]
@@ -79,6 +94,9 @@ def list_years(budget_rows, static_rows):
 
 
 def list_resources(budget_rows, static_rows):
+    """
+    Compile a sorted list of all resources from budget and static rows.
+    """
     return sorted(set(
         [r[1] for r in budget_rows] +
         [r[0] for r in static_rows]
@@ -86,6 +104,9 @@ def list_resources(budget_rows, static_rows):
 
 
 def get_amount(db: Session, flow_type: str, year: str, resource: str) -> float:
+    """
+    Retrieve the amount for a given flow type, year, and resource.
+    """
     row = db.query(ConstructionSource.amount).filter_by(
         flow_type=flow_type, fiscal_year=year, resource=resource
     ).first()
@@ -93,6 +114,9 @@ def get_amount(db: Session, flow_type: str, year: str, resource: str) -> float:
 
 
 def calc_interest(db: Session, year: str, resource: str, rate: float):
+    """
+    Calculate and insert projected interest for a resource in a given year.
+    """
     cost = get_amount(db, "COSTS", year, resource)
     beg = get_amount(db, "END_EQUITY", str(int(year) - 1), resource)
     proceeds = get_amount(db, "PROCEEDS", year, resource)
@@ -102,6 +126,9 @@ def calc_interest(db: Session, year: str, resource: str, rate: float):
 
 
 def calc_balance(db: Session, year: str, resource: str):
+    """
+    Calculate and insert beginning and ending equity balances for a resource.
+    """
     beg = get_amount(db, "END_EQUITY", str(int(year) - 1), resource)
     insert_rows(db, [[resource, "BEG_EQUITY", year, "PROJECTED", beg]])
 

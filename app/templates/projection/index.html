@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="mb-4">Run Projection</h1>
+  <div id="form-container" class="mb-4">
+    <form hx-post="/projection/run" hx-target="#result-container" hx-swap="innerHTML">
+      <div class="mb-3">
+        <label for="passphrase" class="form-label">Passphrase</label>
+        <input type="password" class="form-control" id="passphrase" name="passphrase" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Run Projection</button>
+    </form>
+  </div>
+  <div id="result-container"></div>
+{% endblock %}
